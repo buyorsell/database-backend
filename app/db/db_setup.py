@@ -31,7 +31,6 @@ class Meduza(Base):
     x = Column(REAL)
     y = Column(REAL)
     highlights = Column(String)
-    tokens = Column(ARRAY(String))
 
 
 class Kommersant(Base):
@@ -51,8 +50,37 @@ class Kommersant(Base):
     tokens = Column(ARRAY(String))
 
 
-Base.metadata.bind = engine
-Base.metadata.create_all(engine)
+class Lenta(Base):
+    __tablename__ = "lenta"
+    id = Column(Integer, primary_key=True)
+    datetime = Column(DateTime)
+    link = Column(String, unique=True)
+    title = Column(String)
+    text = Column(String)
+    locs = Column(ARRAY(String))
+    pers = Column(ARRAY(String))
+    orgs = Column(ARRAY(String))
+    x = Column(REAL)
+    y = Column(REAL)
+    highlights = Column(String)
 
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+
+class Interfax(Base):
+    __tablename__ = "interfax"
+    id = Column(Integer, primary_key=True)
+    datetime = Column(DateTime)
+    link = Column(String, unique=True)
+    title = Column(String)
+    text = Column(String)
+    locs = Column(ARRAY(String))
+    pers = Column(ARRAY(String))
+    orgs = Column(ARRAY(String))
+    rubric = Column(ARRAY(String))
+    x = Column(REAL)
+    y = Column(REAL)
+    highlights = Column(String)
+#Base.metadata.bind = engine
+#Base.metadata.create_all(engine)
+
+#DBSession = sessionmaker(bind=engine)
+#session = DBSession()
