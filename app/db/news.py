@@ -1,24 +1,18 @@
 from typing import Dict
-from app.db.db_setup import Kommersant
+from app.db.db_setup import AllNews, async_session
+from app.db.db_setup import async_engine as engine
 import logging
 import os
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy import select, or_
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select, update
+
 import datetime
 
-engine = create_async_engine(
-    os.environ.get('PostgresDB'), echo=True,
-)
-async_session = sessionmaker(
-    engine, expire_on_commit=False, class_=AsyncSession
-)
 
 
-async def get_all_kommersant_news():
+async def get_all_news():
     logging.info("Kommersant requested")
     async with async_session() as session:
-        query = select(Kommersant)
+        query = select(AllNews)
         result = await session.execute(query)
         data = []
         for item_row in result.all():
@@ -39,16 +33,14 @@ async def get_all_kommersant_news():
                 "tokens": item.tokens,
             }
             data.append(item_processed)
-        response = {
-            "data": data,
-        }
+        response = data
     return response
 
 
-async def get_kommersant_news_by_rubric(rubric: str):
-    logging.info("Kommersant requested")
+async def get_news_by_rubric(rubric: str):
+    logging.info("News by rubric requested")
     async with async_session() as session:
-        query = select(Kommersant).where(Kommersant.rubric.any(rubric))
+        query = select(AllNews).where(AllNews.rubric.any(rubric))
         result = await session.execute(query)
         data = []
         for item_row in result.all():
@@ -69,16 +61,14 @@ async def get_kommersant_news_by_rubric(rubric: str):
                 "tokens": item.tokens,
             }
             data.append(item_processed)
-        response = {
-            "data": data,
-        }
+        response = data
     return response
 
 
-async def get_kommersant_record_by_id(id: int):
-    logging.info("Kommersant by id requested")
+async def get_record_by_id(id: int):
+    logging.info("News by id requested")
     async with async_session() as session:
-        query = select(Kommersant).where(Kommersant.id == id)
+        query = select(AllNews).where(AllNews.id == id)
         result = await session.execute(query)
         data = []
         for item_row in result.all():
@@ -99,7 +89,15 @@ async def get_kommersant_record_by_id(id: int):
                 "tokens": item.tokens,
             }
             data.append(item_processed)
-        response = {
-            "data": data,
-        }
+        response = data
     return response
+
+
+async def mutate_news_coords(id: int, x: float, y: float):
+	logging.info("News entry: mutate coords")
+	async with async_session() as session:
+		query = update(AllNews).where(AllNews.id == id).values(x=x, y=y)
+		print(query)
+		await session.execute(query)
+		await session.commit()
+
