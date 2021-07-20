@@ -14,6 +14,7 @@ async def get_tickers():
             item_processed = {
                 "sec_id": item.sec_id,
 				"shortname": item.shortname,
+				"bos": item.bos,
             }
             data.append(item_processed)
         response = data

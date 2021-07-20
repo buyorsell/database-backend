@@ -101,6 +101,7 @@ class Ticker(Base):
 	id = Column(Integer, primary_key=True)
 	sec_id = Column(String)
 	shortname = Column(String)
+	bos = Column(Float)
 
 
 async_engine = create_async_engine(
