@@ -3,7 +3,7 @@ from app.db.db_setup import AllNews, async_session, Recommendation
 from app.db.db_setup import async_engine as engine
 import logging
 import os
-from sqlalchemy import select, update, desc
+from sqlalchemy import select, update, desc, and_
 
 import datetime
 
@@ -132,7 +132,7 @@ async def get_twenty_news(n: int):
 async def get_bos_by_id_and_secid(id: int, secid: str):
     logging.info("Getting bos for id:", id, "and secid:", secid)
     async with async_session() as session:
-        query = select(Recommendation).where(Recommendation.quote == secid)
+        query = select(Recommendation).where(and_(Recommendation.quote == secid, Recommendation.news_id == id))
         result = await session.execute(query)
         recs  = result.all()
         boses = []
