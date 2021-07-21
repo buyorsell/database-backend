@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List
 from sqlalchemy.orm.exc import NoResultFound
 
-from app.db.news import get_all_news, get_record_by_id, get_news_by_rubric, mutate_news_coords, get_twenty_news
+from app.db.news import get_all_news, get_record_by_id, get_news_by_rubric, mutate_news_coords, get_twenty_news, get_bos_by_id_and_secid
 from app.db.tickers import get_tickers
 
 app = FastAPI()
@@ -35,10 +35,12 @@ async def read_root():
     return {"Hello": "From Our DB!"}
 
 
-@app.get("/news", response_model=List[NewsModel])
-async def fetch_all_news(id: int = None, rubric: str = None, page: int = None):
+@app.get("/news")
+async def fetch_all_news(id: int = None, rubric: str = None, page: int = None, secid: str = None):
 	if page != None:
 		return await get_twenty_news(page)
+	elif id != None and secid != None:
+		return await get_bos_by_id_and_secid(id, secid)
 	elif id != None:
 		return await get_record_by_id(id)
 	elif rubric != None:

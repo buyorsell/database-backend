@@ -1,5 +1,5 @@
 from typing import Dict
-from app.db.db_setup import AllNews, async_session
+from app.db.db_setup import AllNews, async_session, Recommendation
 from app.db.db_setup import async_engine as engine
 import logging
 import os
@@ -126,4 +126,20 @@ async def get_twenty_news(n: int):
             }
             data.append(item_processed)
         response = data
+    return response
+
+
+async def get_bos_by_id_and_secid(id: int, secid: str):
+    logging.info("Getting bos for id:", id, "and secid:", secid)
+    async with async_session() as session:
+        query = select(Recommendation).where(Recommendation.quote == secid)
+        result = await session.execute(query)
+        recs  = result.all()
+        boses = []
+        for item_row in recs:
+            item = item_row[0]
+            boses.append(item.bos)
+        response = {
+            "bos": sum(boses)
+        }
     return response
