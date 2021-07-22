@@ -4,6 +4,7 @@ from typing import List
 from sqlalchemy.orm.exc import NoResultFound
 
 from app.db.news import get_all_news, get_record_by_id, get_news_by_rubric, mutate_news_coords, get_twenty_news, get_bos_by_id_and_secid
+from app.db.moex import get_all_stocks_by_secid
 from app.db.tickers import get_tickers
 
 app = FastAPI()
@@ -60,3 +61,7 @@ async def change_news_x_y_by_id(item: NewsCoords):
 @app.get("/tickers")
 async def serve_tickers():
 	return await get_tickers()
+
+@app.get("/stock/{secid}")
+async def serve_stock(secid: str):
+	return await get_all_stocks_by_secid(secid)

@@ -10,7 +10,7 @@ import datetime
 
 
 async def get_all_news():
-    logging.info("Kommersant requested")
+    logging.info("All news requested")
     async with async_session() as session:
         query = select(AllNews)
         result = await session.execute(query)

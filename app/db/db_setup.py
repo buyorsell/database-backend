@@ -105,7 +105,7 @@ class Ticker(Base):
 
 
 async_engine = create_async_engine(
-    os.environ.get('PSQL_DB'), echo=True,
+    os.environ.get('PSQL_DB')
 )
 async_session = sessionmaker(
     async_engine, expire_on_commit=False, class_=AsyncSession
