@@ -6,6 +6,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from app.db.news import get_all_news, get_record_by_id, get_news_by_rubric, mutate_news_coords, get_twenty_news, get_bos_by_id_and_secid
 from app.db.moex import get_all_stocks_by_secid
 from app.db.tickers import get_tickers
+from app.db.misc import get_topics, get_entities
 
 app = FastAPI()
 
@@ -65,3 +66,12 @@ async def serve_tickers():
 @app.get("/stock/{secid}")
 async def serve_stock(secid: str):
 	return await get_all_stocks_by_secid(secid)
+
+@app.get("/entities")
+async def serve_entities():
+	return await get_entities()
+
+@app.get("/topics")
+async def serve_topics():
+	return await get_topics()
+

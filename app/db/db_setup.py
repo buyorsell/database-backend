@@ -6,8 +6,8 @@ from sqlalchemy import (
     ARRAY,
     DateTime,
     REAL,
-	Float,
-   	ForeignKey
+    Float,
+       ForeignKey
 )
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
@@ -97,11 +97,23 @@ class Recommendation(Base):
 
 
 class Ticker(Base):
-	__tablename__ = 'tickers'
-	id = Column(Integer, primary_key=True)
-	sec_id = Column(String)
-	shortname = Column(String)
-	bos = Column(Float)
+    __tablename__ = 'tickers'
+    id = Column(Integer, primary_key=True)
+    sec_id = Column(String)
+    shortname = Column(String)
+    bos = Column(Float)
+
+
+class Entity(Base):
+    __tablename__ = 'entity'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+
+class Topic(Base):
+    __tablename__ = 'topic'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
 
 
 async_engine = create_async_engine(
