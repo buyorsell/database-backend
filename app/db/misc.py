@@ -16,6 +16,7 @@ async def get_topics():
 			}
 			data.append(item_processed)
 		response = data
+		await session.close()
 	return response
 
 
@@ -33,4 +34,5 @@ async def get_entities():
 			}
 			data.append(item_processed)
 		response = data
+		await session.close()
 	return response

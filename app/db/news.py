@@ -34,6 +34,7 @@ async def get_all_news():
             }
             data.append(item_processed)
         response = data
+        await session.close()
     return response
 
 
@@ -62,6 +63,7 @@ async def get_news_by_rubric(rubric: str):
             }
             data.append(item_processed)
         response = data
+        await session.close()
     return response
 
 
@@ -90,6 +92,7 @@ async def get_record_by_id(id: int):
             }
             data.append(item_processed)
         response = data
+        await session.close()
     return response
 
 
@@ -99,6 +102,8 @@ async def mutate_news_coords(id: int, x: float, y: float):
         query = update(AllNews).where(AllNews.id == id).values(x=x, y=y)
         await session.execute(query)
         await session.commit()
+        await session.close()
+
 
 
 async def get_twenty_news(n: int):
@@ -126,6 +131,7 @@ async def get_twenty_news(n: int):
             }
             data.append(item_processed)
         response = data
+        await session.close()
     return response
 
 
@@ -142,4 +148,5 @@ async def get_bos_by_id_and_secid(id: int, secid: str):
         response = {
             "bos": sum(boses)
         }
+        await session.close()
     return response

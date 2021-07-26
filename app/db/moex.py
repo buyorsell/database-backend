@@ -23,4 +23,5 @@ async def get_all_stocks_by_secid(secid: str):
             }
             data.append(item_processed)
         response = data
+        await session.close()
     return response
